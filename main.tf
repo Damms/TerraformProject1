@@ -73,16 +73,16 @@ resource "aws_key_pair" "phob_auth" {
 resource "aws_instance" "dev_node" {
   instance_type = "t2.micro"
   ami = data.aws_ami.server_ami.id
-
-  tags = {
-    Name = "dev-node"
-  }
-
   key_name = aws_key_pair.phob_auth.id
   vpc_security_group_ids = [aws_security_group.phob_sg.id]
   subnet_id = aws_subnet.phob_subnet.id
+  user_data = file("userdata.tpl")
 
   root_block_device {
     volume_size = 10
+  }
+
+  tags = {
+    Name = "dev-node"
   }
 }
