@@ -55,10 +55,27 @@ add the file path to you public key into the aws key pair resource as below
 ### Step 6 - Add datasource to get AMI for Ubuntu image
 ![image](https://github.com/user-attachments/assets/9837ea58-6c9c-45f0-bb4d-ee263660fcf9)
 
-### Step 7 - Configure EC2 instance for Ubuntu
+### Step 7 - Create userdata.tpl script for EC2 instance
+```
+#!/bin/bash
+sudo apt-get update -y &&
+sudo apt-get install -y \
+apt-transport-https \
+ca-certificates \
+curl \
+gnugp-agent \
+software-properties-common &&
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
+sudo apt-get update -y &&
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y &&
+sudo usermod -aG docker ubuntu
+```
+
+### Step 8 - Configure EC2 instance for Ubuntu
 ![image](https://github.com/user-attachments/assets/780db96c-6f28-472f-94ca-5472c65a8840)
 
-### Step 8 - Terraform Init and Apply!
+### Step 9 - Terraform Init and Apply!
 Spin up the infrastructure using terraform init then terraform apply (assuming AWS provider creds are all set). Once you're all done don't forget to terraform destroy ;)
 
 
