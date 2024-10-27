@@ -26,7 +26,9 @@ I will deploy a EC2 instance with a user data script to automatically install th
 - Visual Studio Code
 
 ### Prerequisites 
-AWS Subscription
+- AWS Access Key
+- Terraform
+- Code Editor (I use Visual Studio Code)
 
 ## Steps
 
