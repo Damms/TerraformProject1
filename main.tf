@@ -64,3 +64,8 @@ resource "aws_security_group" "phob_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_key_pair" "phob_auth" {
+  key_name   = "phob-key"
+  public_key = file("~/.ssh/phobkey.pub")
+}
