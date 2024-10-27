@@ -19,10 +19,48 @@ resource "aws_subnet" "phob_subnet" {
 }
 
 resource "aws_internet_gateway" "phob_igw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.phob_vpc.id
 
   tags = {
     Name = "dev-igw"
   }
 }
 
+resource "aws_route_table" "phob_public_rt" {
+  vpc_id = aws_vpc.phob_vpc.id
+
+  tags = {
+    Name = "dev-public-rt"
+  }
+}
+
+resource "aws_route" "default_route" {
+  route_table_id         = aws_route_table.phob_public_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.phob_igw.id
+}
+
+resource "aws_route_table_association" "phob_public_assoc" {
+  subnet_id      = aws_subnet.phob_subnet.id
+  route_table_id = aws_route_table.phob_public_rt.id
+}
+
+resource "aws_security_group" "phob_sg" {
+  name        = "dev-sg"
+  description = "dev security group"
+  vpc_id      = aws_vpc.phob_vpc.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["125.237.201.82/32"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
