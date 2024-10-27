@@ -1,4 +1,4 @@
-# Configure Security Operations using Microsoft Sentinel
+# Using Terraform to create AWS development environment
 
 ## Objective
 In this project I will grow my infrastructure as code skills by using Terraform to automatically build me a remote development environment in AWS.
